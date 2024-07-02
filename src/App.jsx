@@ -10,6 +10,7 @@ import LoginPage from './Auth/LoginPage';
 import RegisterPage from './Auth/RegisterPage';
 import ContactUs from './ContactUs';
 import Cart from './Cart';
+import Wishlist from './Wishlist';
 // import Contact from './Contact';
 // import Cart from './Cart';
 // import Checkout from './Checkout';
@@ -33,6 +34,7 @@ function App() {
         <Route path='/testimonial' element={<Testimonial />} />*/}
         <Route path='/login' element={<LoginPage />} />
         <Route path='/cart' element={<Cart />} />
+        <Route path='/wishlist' element={<Wishlist />} />
         <Route path='/signup' element={<RegisterPage />} />
         <Route path='/contact' element={<ContactUs />} />
         <Route path="/*" element={<ErrorPage />} /> 
