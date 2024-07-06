@@ -1,4 +1,3 @@
-import React from 'react'
 import InstagramItem1 from "../assets/homepage/img/instagram/Image-01.jpg";
 import InstagramItem2 from "../assets/homepage/img/instagram/Image-02.jpg";
 import InstagramItem3 from "../assets/homepage/img/instagram/Image-03.jpg";
@@ -30,7 +29,7 @@ function Footer() {
                         <form target="_blank" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
                               method="get" className="subscribe_form relative">
                             <div className="input-group d-flex flex-row">
-                                <input name="EMAIL" placeholder="Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address '"
+                                <input name="EMAIL" placeholder="Email Address" onFocus="this.placeholder = ''" onBlur="this.placeholder = 'Email Address '"
                                        required="" type="email" />
                                 <button className="btn sub-btn">
                                     <span className="fa fa-arrow-right"></span>
