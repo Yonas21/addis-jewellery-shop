@@ -1,5 +1,6 @@
 import './App.css';
 import HomePage from './HomePage';
+import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from './Auth/LoginPage';
 import RegisterPage from './Auth/RegisterPage';
