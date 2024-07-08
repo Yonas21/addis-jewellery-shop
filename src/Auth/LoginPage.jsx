@@ -1,10 +1,11 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { useState } from "react";
 import LoginImage from "../assets/homepage/img/login.jpg";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import { LoadingIcon } from "../components/LoadingIcon";
 import { useNavigate } from "react-router-dom";
-import { auth,  } from "../firebase";
-import {  signInWithEmailAndPassword } from "firebase/auth";
+import { auth, googleProvider } from "../firebase";
+import {  signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 
 function LoginPage() {
 	const navigate = useNavigate()
@@ -54,6 +55,37 @@ function LoginPage() {
 			setIsLoading(true)
 		}
 	};
+
+
+	const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = googleProvider.credentialFromResult(result);
+	  const token = credential.accessToken;
+	  localStorage.setItem("user_tokem", token)
+	  // The signed-in user info.
+      const user = result.user;
+      console.log('User Info:', user);
+
+	  toast.success("User Successfully Logged IN !!!", {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "light",
+				transition: Bounce,
+			});
+
+      // Redirect to homepage
+      navigate('/');
+    } catch (error) {
+      console.error('Error during Google login:', error);
+    }
+  };
 	return (
 		<>
 		<ToastContainer />
@@ -147,7 +179,7 @@ function LoginPage() {
 										</a>
 
 										<a
-											href="#"
+											onClick={handleGoogleLogin}
 											className="login100-social-item bg3"
 										>
 											<i className="fa fa-google-plus"></i>
