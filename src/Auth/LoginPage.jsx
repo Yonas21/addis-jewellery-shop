@@ -1,25 +1,62 @@
+import { useState } from "react";
 import LoginImage from "../assets/homepage/img/login.jpg";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import { LoadingIcon } from "../components/LoadingIcon";
+import { useNavigate } from "react-router-dom";
+import { auth,  } from "../firebase";
+import {  signInWithEmailAndPassword } from "firebase/auth";
 
 function LoginPage() {
+	const navigate = useNavigate()
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [error, setError] = useState("");
+	const [success, setSuccess] = useState("");
+	const [isLoading, setIsLoading] = useState(false)
+
+	const handleLogin = async (e) => {
+		e.preventDefault();
+		try {
+			setIsLoading(true)
+			await signInWithEmailAndPassword(auth, email, password);
+
+			// Save additional user information in Firestore
+			toast.success("User Successfully Logged IN !!!", {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "light",
+				transition: Bounce,
+			});
+			setTimeout(() => {
+				navigate("/")
+			}, 1000);
+			setError("");
+			setIsLoading(false)
+		} catch (error) {
+			toast.error(error.message, {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "light",
+				transition: Bounce,
+			});
+			setError(error.message);
+			setSuccess("");
+			setIsLoading(true)
+		}
+	};
 	return (
 		<>
-			{/* <!--================Home Banner Area =================--> */}
-			{/* <section className="banner_area">
-				<div className="banner_inner d-flex align-items-center">
-					<div className="container">
-						<div className="banner_content text-center">
-							<h2>Login/Register</h2>
-							<div className="page_link">
-								<a href="/home">Home</a>
-								<a href="/login">Login</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section> */}
-			{/* <!--================End Home Banner Area =================--> */}
-
-			{/* <!--================Login Box Area =================--> */}
+		<ToastContainer />
 			<section className="login_box_area p_120">
 				<div className="container">
 					<div className="row">
@@ -59,6 +96,8 @@ function LoginPage() {
 											id="username"
 											name="username"
 											placeholder="Username"
+											value={email}
+											onChange={event => setEmail(event.target.value)}
 										/>
 									</div>
 
@@ -70,6 +109,8 @@ function LoginPage() {
 											name="password"
 											placeholder="Password"
 											autoComplete="off"
+											value={password}
+											onChange={event => setPassword(event.target.value)}
 										/>
 									</div>
 
@@ -77,8 +118,11 @@ function LoginPage() {
 										<button
 											type="submit"
 											className="btn submit_btn"
+											onClick={handleLogin}
 										>
-											Log In
+											
+											{isLoading ? <LoadingIcon size={20} className="" />:`Log In`}
+
 										</button>
 										<a href="#">Forgot Password?</a>
 									</div>

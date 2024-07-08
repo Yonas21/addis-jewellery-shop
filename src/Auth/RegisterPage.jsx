@@ -1,13 +1,16 @@
 // import { Link } from "react-router-dom"
 import { useState } from "react";
-import { auth } from "../firebase";
+import { auth,db } from "../firebase";
+import { doc, setDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import RegisterImage from "../assets/homepage/img/login.jpg";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import { LoadingIcon } from "../components/LoadingIcon";
+import { useNavigate } from "react-router-dom";
 
 
 function RegisterPage() {
+	const navigate = useNavigate();
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setlastName] = useState("");
 	const [email, setEmail] = useState("");
@@ -24,7 +27,19 @@ function RegisterPage() {
 		e.preventDefault();
 		try {
 			setIsLoading(true)
-			await createUserWithEmailAndPassword(auth,email,password);
+			const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+			const user = userCredential.user;
+
+			// Save additional user information in Firestore
+			await setDoc(doc(db, "users", user.uid), {
+				email,
+				password,
+				firstName,
+				lastName,
+				address,
+				phoneNumber,
+				gender
+			});
 			toast.success("User Successfully Registered !!!", {
 				position: "top-right",
 				autoClose: 5000,
@@ -36,6 +51,8 @@ function RegisterPage() {
 				theme: "light",
 				transition: Bounce,
 			});
+			navigate("/login")
+
 			setError("");
 			setIsLoading(false)
 		} catch (error) {
