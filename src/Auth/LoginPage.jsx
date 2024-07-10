@@ -19,8 +19,10 @@ function LoginPage() {
 		e.preventDefault();
 		try {
 			setIsLoading(true)
-			await signInWithEmailAndPassword(auth, email, password);
-
+			const userCredentials = await signInWithEmailAndPassword(auth, email, password);
+			const user = userCredentials?.user;
+			localStorage.setItem('user', JSON.stringify(user))
+			localStorage.setItem('validUntil', Date.now() + 3600 * 1000 * 6);
 			// Save additional user information in Firestore
 			toast.success("User Successfully Logged IN !!!", {
 				position: "top-right",
@@ -66,6 +68,9 @@ function LoginPage() {
 	  localStorage.setItem("user_tokem", token)
 	  // The signed-in user info.
       const user = result.user;
+	  localStorage.setItem('user', JSON.stringify(user))
+	  localStorage.setItem('validUntil', Date.now() + 3600 * 1000 * 6);
+
       console.log('User Info:', user);
 
 	  toast.success("User Successfully Logged IN !!!", {

@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 /src/utils/firebase.json
+/src/firestore.indexes.json
+/src/firestore.rules
+src/database.rules.json
