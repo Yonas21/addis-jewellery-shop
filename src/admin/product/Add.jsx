@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import {  ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { db, storage } from "../../firebase";
 import { addDoc, collection } from "firebase/firestore";
+import { LoadingIcon } from "../../components/LoadingIcon";
 
 function Add() {
 	const [itemName, setItemName] = useState("");
@@ -187,7 +188,7 @@ function Add() {
 						type="button"
 						onClick={handleUpload}
 					>
-						Submit
+						{isLoading ? <LoadingIcon size={20} className= "" /> :`Submit`}
 					</button>
 				</div>
 			</form>
