@@ -3,8 +3,10 @@ import {  ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { db, storage } from "../../firebase";
 import { addDoc, collection } from "firebase/firestore";
 import { LoadingIcon } from "../../components/LoadingIcon";
+import { useNavigate } from "react-router-dom";
 
 function Add() {
+	const navigate = useNavigate();
 	const [itemName, setItemName] = useState("");
 	const [itemPrice, setItemPrice] = useState("");
 	const [color, setColor] = useState("");
@@ -59,6 +61,7 @@ function Add() {
 						itemsLeft: itemsInStock,
 						imageUrl: downloadURL,
 					});
+					navigate("/admin/products");
 					setIsLoading(false)
 					console.log("Document written with ID: ", docRef.id);
 					setItemName("");
@@ -75,7 +78,6 @@ function Add() {
 
 	return (
 		<>
-			<form>
 				<div className="form-group col-lg-12">
 					<h6 className="text-heading">Add Product</h6>
 				</div>
@@ -191,7 +193,6 @@ function Add() {
 						{isLoading ? <LoadingIcon size={20} className= "" /> :`Submit`}
 					</button>
 				</div>
-			</form>
 		</>
 	);
 }
