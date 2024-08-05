@@ -138,7 +138,7 @@ function Wishlist() {
                     <form target="_blank" noValidate
                           action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&id=92a4423d01"
                           method="get" className="subscription relative">
-                        <input type="email" name="EMAIL" placeholder="Email address" onFocus="this.placeholder = ''"
+                        <input type="email" name="EMAIL" placeholder="Email address" onFocus={()=>{}}
                                onBlur="this.placeholder = 'Email address'" required="" />
                         <button type="submit" className="newsl-btn">Get Started</button>
                         <div className="info"></div>

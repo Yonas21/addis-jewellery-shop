@@ -126,8 +126,46 @@ function HomePage() {
 			{/* <!--================End Clients Logo Area =================--> */}
 
 			{/* <!--================Feature Product Area =================--> */}
-			<section className="feature_products">
+			<section className="feature_products" style={{marginBottom:"150px"}}>
 				<h3 className="text-heading">Featured Products</h3>
+				{products?.map((product) => (
+					<div
+						key={product.id}
+						className="card single_product"
+					>
+						<img
+							className="card-img-top"
+							alt="Card image cap"
+							src={product?.imageUrl}
+							height={"200px"}
+							style={{ objectFit: "cover" }}
+						/>{" "}
+						<div className="card-body">
+							<h5 className="card-title">Ladies Wear</h5>
+							<p className="card-text">
+								<span className="text-info">Price</span> 23
+							</p>
+							<a style={{ marginRight: "30px" }}>
+								{" "}
+								<i className="fa fa-heart"></i>
+							</a>
+							<a>
+								{" "}
+								<i
+									className="fa fa-shopping-cart"
+									style={{ marginRight: "30px" }}
+								></i>
+							</a>
+							<a>
+								<i className="fa fa-check-square"></i>
+							</a>
+						</div>
+					</div>
+				))}
+			</section>
+			
+			<section className="feature_products">
+				<h3 className="text-heading">Discount Products</h3>
 				{products?.map((product) => (
 					<div
 						key={product.id}

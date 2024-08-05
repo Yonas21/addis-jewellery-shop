@@ -14,6 +14,7 @@ function Add() {
 	const [discount, setDiscount] = useState("");
 	const [itemsInStock, setItemsInStock] = useState("");
 	const [itemImage, setItemImage] = useState(null);
+	const [category, setCategory] = useState("")
 	const [uploadProgress, setUploadProgress] = useState(0);
 	const [isLoading, setIsLoading] = useState(false)
 
@@ -56,9 +57,10 @@ function Add() {
 						name: itemName,
 						price: itemPrice,
 						description: itemDescription,
-						discount: discount,
+						discount: category ==="discount" ? discount : null,
 						color: color,
 						itemsLeft: itemsInStock,
+						category: category,
 						imageUrl: downloadURL,
 					});
 					navigate("/admin/products");
@@ -75,6 +77,8 @@ function Add() {
 			}
 		);
 	};
+
+	console.log("category=========>", category)
 
 	return (
 		<>
@@ -140,6 +144,17 @@ function Add() {
 				</div>
 				<div className="form-group">
 					<label htmlFor="price" className="col-form-label">
+						Category
+					</label>
+					<select className="form-control show" value={category} onChange={e => setCategory(e.target.value)}>
+                    <option value="featured" >featured</option>
+                    <option value="hot" >hot</option>
+                    <option value="discount">discount</option>
+                    <option value="advert">advert</option>
+                </select>
+				</div>
+				{category === "discount" && <div className="form-group">
+					<label htmlFor="price" className="col-form-label">
 						Discount %
 					</label>
 					<input
@@ -150,7 +165,7 @@ function Add() {
 						value={discount}
 						onChange={(event) => setDiscount(event.target.value)}
 					/>
-				</div>
+				</div>}
 
 				<div className="form-group">
 					<label htmlFor="price" className="col-form-label">

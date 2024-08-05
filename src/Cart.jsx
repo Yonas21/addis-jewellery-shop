@@ -186,8 +186,8 @@ function Cart() {
             <form target="_blank" noValidate
               action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&id=92a4423d01"
               method="get" className="subscription relative">
-              <input type="email" name="EMAIL" placeholder="Email address" onFocus="this.placeholder = ''"
-                onBlur="this.placeholder = 'Email address'" required="" />
+              <input type="email" name="EMAIL" placeholder="Email address" onFocus={()=>{}}
+                onBlur={()=>{}}required="" />
               {/* <!-- <div style="position: absolute; left: -5000px;">
 									<input type="text" name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="">
 								</div> --> */}

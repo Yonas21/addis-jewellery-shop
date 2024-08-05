@@ -1,8 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import Item1 from "../assets/homepage/img/logo.png";
+import {  handleLogout, is_loggedin } from "../utils/auth";
 
 function Header() {
 	const navigate = useNavigate()
+	const is_logged_in = is_loggedin();
+
+	
 	return (
 		<header className="header_area">
 			<div className="top_menu row m0">
@@ -12,14 +16,14 @@ function Header() {
 					</div>
 					<div className="float-right">
 						<ul className="right_side">
-							<li>
+							{!is_logged_in && <li>
 								<Link to="/login">Login/Register</Link>
-							</li>
+							</li>}
 							<li>
 								<Link to="/contact">Contact Us</Link>
 							</li>
 							<li>
-								<Link to="/home">Logout</Link>
+								<Link to={""} onClick={handleLogout}>Logout</Link>
 							</li>
 						</ul>
 					</div>

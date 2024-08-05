@@ -136,7 +136,20 @@ function Update() {
 					/>
 				</div>
 
+				
 				<div className="form-group">
+					<label htmlFor="price" className="col-form-label">
+						Category
+					</label>
+					<select className="form-control show" name="category" value={product?.category} onChange={handleChange}>
+                    <option value="featured" >featured</option>
+                    <option value="hot" >hot</option>
+                    <option value="discount">discount</option>
+                    <option value="advert">advert</option>
+                </select>
+				</div>
+
+				{product?.category ==="discount" && <div className="form-group">
 					<label htmlFor="price" className="col-form-label">
 						Discount
 					</label>
@@ -148,7 +161,7 @@ function Update() {
 						value={product.discount}
 						onChange={handleChange}
 					/>
-				</div>
+				</div>}
 
 				<div className="form-group">
 					<label htmlFor="price" className="col-form-label">
