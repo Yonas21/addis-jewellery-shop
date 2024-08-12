@@ -8,6 +8,7 @@ import ContactUs from "./ContactUs";
 import Cart from "./Cart";
 import Wishlist from "./Wishlist";
 import Admin from "./admin/Index";
+import SpecialOrder from './SpecialOrder'
 import MainLayout from "./layouts/MainLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import ErrorPage from "./ErrorPage";
@@ -35,6 +36,7 @@ function App() {
 					<Route path="wishlist" element={<Wishlist />} />
 					<Route path="signup" element={<RegisterPage />} />
 					<Route path="contact" element={<ContactUs />} />
+					<Route path="special-order" element={<SpecialOrder />} />
 				</Route>
 
 				{/* Admin Routes with Admin Layout */}

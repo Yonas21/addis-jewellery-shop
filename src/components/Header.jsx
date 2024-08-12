@@ -1,10 +1,28 @@
 import { Link, useNavigate } from "react-router-dom";
 import Item1 from "../assets/homepage/img/logo.png";
 import {  handleLogout, is_loggedin } from "../utils/auth";
+import { useEffect, useState } from "react";
+import { getUserCartItems } from "../services/items";
+import { getAuth } from "firebase/auth";
 
 function Header() {
 	const navigate = useNavigate()
 	const is_logged_in = is_loggedin();
+	const [cartItems, setCartItems] = useState(0)
+
+	const auth = getAuth();
+	const user = auth.currentUser;
+
+
+	useEffect(() => { 
+	const getCartItems = async() => {
+		const cartItems = await getUserCartItems(user.uid)
+		setCartItems(cartItems?.length)
+	}
+	getCartItems()
+	
+	}, [user])
+
 
 	
 	return (
@@ -140,15 +158,8 @@ function Header() {
 												aria-haspopup="true"
 												aria-expanded="false"
 											>
-												Mall
+												Product Enquiry
 											</Link>
-											<ul className="dropdown-menu">
-												<li className="nav-item">
-													<Link className="nav-link">
-														Mall1
-													</Link>
-												</li>
-											</ul>
 										</li>
 
 										<li className="nav-item submenu dropdown">
@@ -160,36 +171,9 @@ function Header() {
 												aria-haspopup="true"
 												aria-expanded="false"
 											>
-												Pages
+												Share & Win
 											</Link>
-											<ul className="dropdown-menu">
-												<li className="nav-item">
-													<Link
-														className="nav-link"
-														href="/login"
-													>
-														Login
-													</Link>
-												</li>
-
-												<li className="nav-item">
-													<Link
-														className="nav-link"
-														href="#"
-													>
-														Tracking
-													</Link>
-												</li>
-
-												<li className="nav-item">
-													<Link
-														className="nav-link"
-														href="#"
-													>
-														Elements
-													</Link>
-												</li>
-											</ul>
+											
 										</li>
 										<li className="nav-item">
 											<Link
@@ -256,7 +240,7 @@ function Header() {
 															color: "#1da1f2",
 														}}
 													>
-														4
+														{cartItems}
 													</span>
 												</i>
 											</Link>

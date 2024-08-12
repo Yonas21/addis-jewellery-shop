@@ -6,10 +6,19 @@ import Item4 from "./assets/homepage/img/clients-logo/c-logo-4.png";
 import Item5 from "./assets/homepage/img/clients-logo/c-logo-5.png";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "./firebase";
+import { addItemToCart, getUserCartItems } from "./services/items";
+import { Bounce, toast, ToastContainer } from "react-toastify";
+import { getAuth } from "firebase/auth";
 
 function HomePage() {
 	const [products, setProducts] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const [discountProducts, setDiscountProducts] = useState([]);
+
+	const auth = getAuth();
+	const user = auth.currentUser;
+
+
 
 	useEffect(() => {
 		const fetchProducts = async () => {
@@ -25,11 +34,56 @@ function HomePage() {
 				console.error("Error fetching products: ", error);
 			}
 		};
+
+		
 		fetchProducts();
 	}, []);
 
+	
+
+	useEffect(() => {
+		if (products?.length > 0) {
+			setDiscountProducts(
+				products?.filter((item) => Number(item.discount) > 0)
+			);
+		}
+	}, [products]);
+
+	const handleAddToCart = async(product) => {
+		console.log("clicked", user)
+		if (user) {
+			const message = await addItemToCart(user.uid, product);
+			toast.success(message, {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "light",
+				transition: Bounce,
+			});
+		} else {
+			// Redirect to login or notify user to log in
+			toast.error('You have to Log In Before adding items to cart, Thank You!!!', {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "light",
+				transition: Bounce,
+			});
+		}
+	};
+
 	return (
 		<>
+			<ToastContainer />
+
 			<section className="container-fluid home_banner_area">
 				<div className="overlay"></div>
 				<div className="banner_inner d-flex align-items-center">
@@ -77,15 +131,15 @@ function HomePage() {
 										<p className="card-text">
 											<span className="text-info">
 												Price
-											</span>{" "}
+											</span>
 											{product.price}
 										</p>
 										<div className="d-flex justify-content-between">
 											<a href="#">
 												<i className="fa fa-heart"></i>
 											</a>
-											<a href="#">
-												<i className="fa fa-shopping-cart"></i>
+											<a onClick={()=>handleAddToCart(product)} style={{cursor:"pointer"}}>
+												<i className="fa fa-shopping-cart" style={{color:"#007bff"}}></i>
 											</a>
 											<a href="#">
 												<i className="fa fa-check-square"></i>
@@ -126,31 +180,31 @@ function HomePage() {
 			{/* <!--================End Clients Logo Area =================--> */}
 
 			{/* <!--================Feature Product Area =================--> */}
-			<section className="feature_products" style={{marginBottom:"150px"}}>
+			<section
+				className="feature_products"
+				style={{ marginBottom: "150px" }}
+			>
 				<h3 className="text-heading">Featured Products</h3>
 				{products?.map((product) => (
-					<div
-						key={product.id}
-						className="card single_product"
-					>
+					<div key={product.id} className="card single_product">
 						<img
 							className="card-img-top"
 							alt="Card image cap"
 							src={product?.imageUrl}
 							height={"200px"}
 							style={{ objectFit: "cover" }}
-						/>{" "}
+						/>
 						<div className="card-body">
 							<h5 className="card-title">Ladies Wear</h5>
 							<p className="card-text">
 								<span className="text-info">Price</span> 23
 							</p>
 							<a style={{ marginRight: "30px" }}>
-								{" "}
+								
 								<i className="fa fa-heart"></i>
 							</a>
 							<a>
-								{" "}
+								
 								<i
 									className="fa fa-shopping-cart"
 									style={{ marginRight: "30px" }}
@@ -163,32 +217,29 @@ function HomePage() {
 					</div>
 				))}
 			</section>
-			
+
 			<section className="feature_products">
 				<h3 className="text-heading">Discount Products</h3>
-				{products?.map((product) => (
-					<div
-						key={product.id}
-						className="card single_product"
-					>
+				{discountProducts?.map((product) => (
+					<div key={product.id} className="card single_product">
 						<img
 							className="card-img-top"
 							alt="Card image cap"
 							src={product?.imageUrl}
 							height={"200px"}
 							style={{ objectFit: "cover" }}
-						/>{" "}
+						/>
 						<div className="card-body">
 							<h5 className="card-title">Ladies Wear</h5>
 							<p className="card-text">
 								<span className="text-info">Price</span> 23
 							</p>
 							<a style={{ marginRight: "30px" }}>
-								{" "}
+								
 								<i className="fa fa-heart"></i>
 							</a>
 							<a>
-								{" "}
+								
 								<i
 									className="fa fa-shopping-cart"
 									style={{ marginRight: "30px" }}
