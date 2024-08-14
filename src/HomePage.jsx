@@ -6,7 +6,7 @@ import Item4 from "./assets/homepage/img/clients-logo/c-logo-4.png";
 import Item5 from "./assets/homepage/img/clients-logo/c-logo-5.png";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "./firebase";
-import { addItemToCart, getUserCartItems } from "./services/items";
+import { addItemToCart } from "./services/items";
 import { Bounce, toast, ToastContainer } from "react-toastify";
 import { getAuth } from "firebase/auth";
 

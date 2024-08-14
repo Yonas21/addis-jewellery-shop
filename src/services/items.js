@@ -5,6 +5,8 @@ import {
 	arrayUnion,
 	getDoc,
 	setDoc,
+	collection,
+	getDocs,
 } from "firebase/firestore";
 
 const db = getFirestore();
@@ -47,5 +49,37 @@ export const getUserCartItems = async (userId) => {
 	} catch (error) {
 		console.error("Error fetching cart items: ", error);
 		return []; // Return an empty array on error
+	}
+};
+
+export const fetchAllCarts = async () => {
+	try {
+		const cartsRef = collection(db, "carts");
+		const cartDocs = await getDocs(cartsRef);
+		const allCarts = [];
+
+		for (const cartDoc of cartDocs.docs) {
+			const userId = cartDoc.id;
+			const cartDocRef = doc(db, `carts/${userId}`);
+			const itemsDoc = await getDoc(cartDocRef);
+
+			const items = itemsDoc.get("items");
+
+			const cartItems = items.map((doc) => ({
+				id: doc.id,
+				userId,
+				...doc,
+			}));
+
+			allCarts.push({
+				userId,
+				cartItems,
+			});
+		}
+
+		return allCarts;
+	} catch (error) {
+		console.error("Error fetching carts:", error);
+		return [];
 	}
 };
