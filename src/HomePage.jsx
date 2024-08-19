@@ -9,6 +9,7 @@ import { db } from "./firebase";
 import { addItemToCart } from "./services/items";
 import { Bounce, toast, ToastContainer } from "react-toastify";
 import { getAuth } from "firebase/auth";
+import LoadingCard from "./components/LoadingCard";
 
 function HomePage() {
 	const [products, setProducts] = useState([]);
@@ -111,7 +112,7 @@ function HomePage() {
 				<div className="container-fluid">
 					<h3 className="text-heading">Hot Deals of this Month</h3>
 					<div className="row">
-						{products?.map((product) => (
+						{loading ? Array(3).fill(0).map((item, key) =>  <LoadingCard key={key} />) : products?.map((product) => (
 							<div
 								key={product.id}
 								className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"

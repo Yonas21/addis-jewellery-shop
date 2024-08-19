@@ -1,5 +1,56 @@
+import { useEffect, useState } from "react"
+import { getUserCartItems } from "./services/items"
+import { getAuth } from "firebase/auth";
 
 function Cart() {
+  const [cartItems, setCartItems] = useState([])
+  const [total, setTotal] = useState(0)
+  
+  const auth = getAuth();
+	const user = auth.currentUser;
+
+
+  useEffect(() => {
+    const getCartItems = async () => {
+      const items = await getUserCartItems(user.uid);
+      // Add a quantity field to each item
+      const updatedItems = items.map((item) => ({ ...item, quantity: 1 }));
+      setCartItems(updatedItems);
+    };
+    getCartItems();
+  }, [user]);
+
+
+    const handleIncreaseQuantity = (id) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      )
+    );
+  };
+
+  const handleDecreaseQuantity = (id) => {
+    setCartItems((prevItems) =>{
+      prevItems.map((item, index) =>
+        index === id && item.quantity > 1
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      )
+  });
+  };
+
+  const calculateTotal = (items) => {
+    return items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  };
+
+  useEffect(() => {
+    const total = calculateTotal(cartItems);
+    setTotal(total)
+  }, [cartItems])
+  
+
   return (
     <>
     <section className="banner_area">
@@ -33,41 +84,40 @@ function Cart() {
             </thead>
             <tbody>
                 {/* loop over rows */}
-              <tr>
+              {cartItems?.map((item, id) =>  <tr key = {id}>
                 <td>
                   <div className="media">
                     <div className="d-flex">
-                      <img src='' alt="{{product.name}}" />
+                      <img src={item.imageUrl} width="200" height="100" alt="Jewellery Item" />
                     </div>
                     <div className="media-body">
-                      <p>Name</p>
+                      <p>{item.name}</p>
                     </div>
                   </div>
                 </td>
                 <td>
-                  <h5>Price: 23</h5>
+                  <h5>{item?.price}</h5>
                 </td>
                 <td>
                   <div className="product_count">
-                    <input type="text" name="qty" id="qty" maxLength="12" value="1" title="Quantity:"
+                    <input type="text" name="qty" id="qty" maxLength="12" value={item.quantity} title="Quantity:"
                       className="input-text qty" />
                     <button
-                      className="increase items-count" type="button">
+                      className="increase items-count" type="button" onClick = {() =>handleIncreaseQuantity(item.id)}>
                       <i className="fa fa-chevron-up"></i>
                     </button>
                     <button
-                      className="reduced items-count" type="button">
+                      className="reduced items-count" type="button" onClick = {() =>handleDecreaseQuantity(item.id)}>
                       <i className="fa fa-chevron-down"></i>
                     </button>
                   </div>
                 </td>
                 <td>
                   <h5>
-                    {/* {{product.price * count}} */}
-                    price * count
+                   { item.price * item.quantity}
                     </h5>
                 </td>
-              </tr>
+              </tr>)}
               <tr className="bottom_button">
                 <td>
 
@@ -91,13 +141,14 @@ function Cart() {
 
                 </td>
                 <td>
-                  <h5>Subtotal</h5>
+                  <h4>Subtotal</h4>
+                  <h6>{total}</h6>
                 </td>
                 <td>
-                  <h5>
-                    {/* {{sum}} */}
+                  <h4>
                     sum
-                    </h5>
+                    </h4>
+                    <h6>{total}</h6>
                 </td>
               </tr>
               <tr className="shipping_area">
@@ -114,16 +165,16 @@ function Cart() {
                   <div className="shipping_box">
                     <ul className="list">
                       <li>
-                        <a href="#">Flat Rate: $5.00</a>
+                        <a href="#">Flat Rate: ETB 5.00</a>
                       </li>
                       <li>
                         <a href="#">Free Shipping</a>
                       </li>
                       <li>
-                        <a href="#">Flat Rate: $10.00</a>
+                        <a href="#">Flat Rate: ETB 100.00</a>
                       </li>
                       <li className="active">
-                        <a href="#">Local Delivery: $2.00</a>
+                        <a href="#">Local Delivery: ETB 200.00</a>
                       </li>
                     </ul>
                     <h6>Calculate Shipping

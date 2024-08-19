@@ -24,7 +24,6 @@ function Header() {
 	}, [user])
 
 
-	
 	return (
 		<header className="header_area">
 			<div className="top_menu row m0">
