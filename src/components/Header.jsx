@@ -2,13 +2,14 @@ import { Link, useNavigate } from "react-router-dom";
 import Item1 from "../assets/homepage/img/logo.png";
 import {  handleLogout, is_loggedin } from "../utils/auth";
 import { useEffect, useState } from "react";
-import { getUserCartItems } from "../services/items";
+import { getUserCartItems, getUserWishlistItems } from "../services/items";
 import { getAuth } from "firebase/auth";
 
 function Header() {
 	const navigate = useNavigate()
 	const is_logged_in = is_loggedin();
 	const [cartItems, setCartItems] = useState(0)
+	const [wishlistItems, setWishlistItems] = useState(0)
 
 	const auth = getAuth();
 	const user = auth.currentUser;
@@ -18,11 +19,16 @@ function Header() {
 	const getCartItems = async() => {
 		const cartItems = await getUserCartItems(user.uid)
 		setCartItems(cartItems?.length)
+	}	
+	
+	const getWishlistItems = async() => {
+		const wishlistItems = await getUserWishlistItems(user.uid)
+		setWishlistItems(wishlistItems?.length)
 	}
 	getCartItems()
+	getWishlistItems()
 	
 	}, [user])
-
 
 	return (
 		<header className="header_area">
@@ -220,7 +226,7 @@ function Header() {
 													aria-hidden="true"
 												>
 													<span style={{color: "#1da1f2"}}>
-														3
+														{wishlistItems}
 													</span>
 												</i>
 											</Link>

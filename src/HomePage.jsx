@@ -6,7 +6,7 @@ import Item4 from "./assets/homepage/img/clients-logo/c-logo-4.png";
 import Item5 from "./assets/homepage/img/clients-logo/c-logo-5.png";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "./firebase";
-import { addItemToCart } from "./services/items";
+import { addItemToCart, addItemToWishlist } from "./services/items";
 import { Bounce, toast, ToastContainer } from "react-toastify";
 import { getAuth } from "firebase/auth";
 import LoadingCard from "./components/LoadingCard";
@@ -79,6 +79,36 @@ function HomePage() {
 				transition: Bounce,
 			});
 		}
+	};	
+	const handleAddToWishlist = async(product) => {
+		console.log("clicked", user)
+		if (user) {
+			const message = await addItemToWishlist(user.uid, product);
+			toast.success(message, {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "light",
+				transition: Bounce,
+			});
+		} else {
+			// Redirect to login or notify user to log in
+			toast.error('You have to Log In Before adding items to Wishlist, Thank You!!!', {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "light",
+				transition: Bounce,
+			});
+		}
 	};
 
 	return (
@@ -136,8 +166,8 @@ function HomePage() {
 											{product.price}
 										</p>
 										<div className="d-flex justify-content-between">
-											<a href="#">
-												<i className="fa fa-heart"></i>
+											<a onClick={()=>handleAddToWishlist(product)} style={{cursor:"pointer"}}>
+												<i className="fa fa-heart" style={{color:"#007bff"}}></i>
 											</a>
 											<a onClick={()=>handleAddToCart(product)} style={{cursor:"pointer"}}>
 												<i className="fa fa-shopping-cart" style={{color:"#007bff"}}></i>
@@ -186,7 +216,7 @@ function HomePage() {
 				style={{ marginBottom: "150px" }}
 			>
 				<h3 className="text-heading">Featured Products</h3>
-				{products?.map((product) => (
+				{ loading ? Array(3).fill(0).map((item, key) =>  <LoadingCard key={key} />) :products?.map((product) => (
 					<div key={product.id} className="card single_product">
 						<img
 							className="card-img-top"
@@ -221,7 +251,7 @@ function HomePage() {
 
 			<section className="feature_products">
 				<h3 className="text-heading">Discount Products</h3>
-				{discountProducts?.map((product) => (
+				{ loading ? Array(3).fill(0).map((item, key) =>  <LoadingCard key={key} />) : discountProducts?.map((product) => (
 					<div key={product.id} className="card single_product">
 						<img
 							className="card-img-top"
