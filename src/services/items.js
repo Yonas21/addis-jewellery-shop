@@ -123,3 +123,20 @@ export const fetchAllCarts = async () => {
 		return [];
 	}
 };
+
+export const logShareEvent = async (userId, platform) => {
+	const shareDocRef = doc(
+		db,
+		"shares",
+		`${userId}_${new Date().toISOString()}`
+	);
+
+	await setDoc(shareDocRef, {
+		userId,
+		platform,
+		sharedAt: new Date(),
+	});
+
+	console.log("Share logged in Firebase!");
+};
+

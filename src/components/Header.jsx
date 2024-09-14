@@ -156,7 +156,7 @@ function Header() {
 
 										<li className="nav-item submenu dropdown">
 											<Link
-												href="#"
+												to="/shocases"
 												className="nav-link dropdown-toggle"
 												data-toggle="dropdown"
 												role="button"
@@ -167,9 +167,9 @@ function Header() {
 											</Link>
 										</li>
 
-										<li className="nav-item submenu dropdown">
+										{is_logged_in && <li className="nav-item submenu dropdown">
 											<Link
-												href="#"
+												to="/share_win"
 												className="nav-link dropdown-toggle"
 												data-toggle="dropdown"
 												role="button"
@@ -179,7 +179,7 @@ function Header() {
 												Share & Win
 											</Link>
 											
-										</li>
+										</li>}
 										<li className="nav-item">
 											<Link
 												className="nav-link"

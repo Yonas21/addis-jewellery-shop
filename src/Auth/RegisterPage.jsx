@@ -7,6 +7,8 @@ import RegisterImage from "../assets/homepage/img/login.jpg";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import { LoadingIcon } from "../components/LoadingIcon";
 import { useNavigate } from "react-router-dom";
+import { logShareEvent } from "../services/items";
+import { browserName, isAndroid, isWindows } from "react-device-detect";
 
 
 function RegisterPage() {
@@ -51,6 +53,8 @@ function RegisterPage() {
 				theme: "light",
 				transition: Bounce,
 			});
+			logShareEvent(user.uid,(isAndroid ? "Android" : isWindows ? "Windows" :"Mac OS") + " "+ browserName );
+
 			navigate("/login")
 
 			setError("");

@@ -1,11 +1,13 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {browserName, isAndroid, isWindows} from 'react-device-detect'
 import LoginImage from "../assets/homepage/img/login.jpg";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import { LoadingIcon } from "../components/LoadingIcon";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { auth, googleProvider } from "../firebase";
 import {  signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { logShareEvent } from "../services/items";
 
 function LoginPage() {
 	const navigate = useNavigate()
@@ -14,6 +16,20 @@ function LoginPage() {
 	const [error, setError] = useState("");
 	const [success, setSuccess] = useState("");
 	const [isLoading, setIsLoading] = useState(false)
+	const [code, setCode] = useState("")
+
+	const location = useLocation();
+
+	useEffect(() => {
+		const params = new URLSearchParams(location.search);
+		const sharedBy = params.get('code');
+
+		if (sharedBy) {
+		// Log or track share action
+		setCode(sharedBy)
+		console.log(`This link was shared by user code : ${code}`);
+		}
+	}, [location]);
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
@@ -35,6 +51,7 @@ function LoginPage() {
 				theme: "light",
 				transition: Bounce,
 			});
+			logShareEvent(user.uid,(isAndroid ? "Android" : isWindows ? "Windows" :"Mac OS") + " "+ browserName );
 			setTimeout(() => {
 				navigate("/")
 			}, 1000);
@@ -86,6 +103,7 @@ function LoginPage() {
 			});
 
       // Redirect to homepage
+	  logShareEvent(user.uid,(isAndroid ? "Android" : isWindows ? "Windows" :"Mac OS") + " "+ browserName );
       navigate('/');
     } catch (error) {
       console.error('Error during Google login:', error);

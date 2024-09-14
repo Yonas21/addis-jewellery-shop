@@ -12,6 +12,8 @@ import SpecialOrder from './SpecialOrder'
 import MainLayout from "./layouts/MainLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import ErrorPage from "./ErrorPage";
+import ShareWinPage from "./ShareWin";
+import ProductEnquiry from "./ProductEnquiry";
 import { useEffect } from "react";
 import { checkValidity, handleLogout } from "./utils/auth";
 
@@ -37,6 +39,8 @@ function App() {
 					<Route path="signup" element={<RegisterPage />} />
 					<Route path="contact" element={<ContactUs />} />
 					<Route path="special-order" element={<SpecialOrder />} />
+					<Route path="share_win" element={<ShareWinPage />} />
+					<Route path="shocases" element={<ProductEnquiry />} />
 				</Route>
 
 				{/* Admin Routes with Admin Layout */}
