@@ -7,6 +7,7 @@ import CheckoutInfo from './CheckoutInfo';
 import AddProduct from './product/Add'; 
 import Products from './product/Index'; 
 import UpdateProduct from './product/Update'; 
+import Contributions from './Contributions';
 
 const Admin = () => {
   return (
@@ -18,6 +19,7 @@ const Admin = () => {
         <Route path="/add-product" element={<AddProduct />} />
         <Route path="/products" element={<Products />} />
         <Route path="/update-product" element={<UpdateProduct />} />
+        <Route path="/user-contributions" element={<Contributions />} />
       </Route>
     </Routes>
   );

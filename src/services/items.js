@@ -140,3 +140,34 @@ export const logShareEvent = async (userId, platform) => {
 	console.log("Share logged in Firebase!");
 };
 
+  export const fetchSharesWithUsers = async () => {
+		const sharesCollection = collection(db, "shares");
+
+		try {
+			// Step 1: Get all shares
+			const sharesSnapshot = await getDocs(sharesCollection);
+			const sharePromises = sharesSnapshot.docs.map(async (shareDoc) => {
+				const shareData = shareDoc.data();
+
+				// Step 2: Use the user_id from the share data to fetch the user details
+				const userDocRef = doc(db, "users", shareData.userId);
+				const userDocSnapshot = await getDoc(userDocRef);
+
+				// Step 3: Combine share data with user data
+				return {
+					...shareData,
+					user: userDocSnapshot.exists()
+						? userDocSnapshot.data()
+						: null,
+				};
+			});
+
+			// Step 4: Resolve all promises and set the state with share and user details
+			const sharesWithUserDetails = await Promise.all(sharePromises);
+			return sharesWithUserDetails;
+		} catch (error) {
+			return "Error fetching shares or users:", error;
+		}
+  };
+
+
